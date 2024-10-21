@@ -1,0 +1,89 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰棋, 3230104245}
+\chead{数据结构与算法第四次作业}
+\rhead{Oct.20th, 2024}
+
+
+\section{测试程序的设计思路}  
+
+1. 功能测试覆盖:  
+    
+    在头文件中，包含了 <iostream> 标准库用于输入输出，以及自定义的 List 类的头文件 “List.h”。
+    
+    在主函数前，我自定义了一个printList函数，用于打印 List 中的元素，它使用了 List 类的 `begin()` 和 `end()` 函数来获取迭代器，然后通过迭代器遍历 List 并输出元素。
+    
+    在主函数中
+    
+        （1）我先创建了两个 List 对象 `list1` 和 `list2`，其中 `list2` 包含了初始值 1, 2, 3, 4。
+        
+        （2）接着测试了 `list2` 的大小和 `list1` 是否为空，验证了 'size()' 和 'empty()'函数
+
+        （3）然后测试List的插入元素和删除的功能，先分别在头部、尾部和中间位置插入元素验证。再逐个删除。
+
+        （4）我又测试了访问List2的首尾元素（front()和back()）
+
+        (5)为测试链表的移动和复制操作，我创建了多个链表对象，并对它们进行移动和复制操作，以验证这些操作是否正确。这样的设计能够全面地测试链表对象的复制构造函数和移动构造函数，以及复制赋值运算符和移动赋值运算符的正确性。
+
+        (6)最后测试清空函数，也是防止内存泄漏的重要一步。
+  
+2. 边界情况考虑:  
+
+    我特别关注了链表的边界情况，例如对空链表进行删除操作，或者删除唯一一个元素后链表为空的情况。这有助于确保链表在极端情况下也能正常工作。  
+
+
+\section{测试的结果}
+
+经过测试，所有功能都能正常工作。
+链表在插入和删除元素时表现良好，没有出现异常行为。复制和移动操作也得到了有效验证，表明链表的复制构造函数和移动构造函数以及复制赋值运算符和移动赋值运算符都能正确地工作。  
+  
+我使用了 valgrind 进行测试，发现没有发生内存泄露，这表明程序的内存管理方面也是正确的。  
+
+\section{（可选）bug报告}
+
+在我的测试中，我没有发现任何明显的 bug。程序在各种操作下都表现良好，没有出现异常情况。
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

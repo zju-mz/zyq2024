@@ -1,0 +1,119 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰棋, 3230104245}
+\chead{数据结构与算法第五次作业}
+\rhead{Nov.4th, 2024}
+
+
+\section{对修改后remove函数实现的阐述}  
+
+\subsection{函数目的}
+修改后的remove 函数用于从二叉搜索树中通过修改指针和节点替换的方式删除指定的元素。该函数的设计旨在高效地进行删除操作，避免节点内容的复制，并减少不必要的递归调用。
+
+\subsection{功能概述}
+
+1. 查找元素：
+
+（1）函数首先检查当前节点是否为空。如果为空，说明树中不存在该元素，直接返回。
+
+（2）如果当前节点的元素小于要删除的元素，则在左子树中递归查找；如果当前节点的元素大于要删除的元素，则在右子树中递归查找。
+
+2.  删除节点：
+
+一旦找到要删除的节点，根据该节点的子树情况进行处理：
+
+（1）如果节点有两个子节点，使用 detachMin 函数从右子树中找到最小节点，并用该最小节点的值替换当前节点的值。这种方式避免了节点内容的复制。
+
+（2）如果节点只有一个子节点或没有子节点，直接更新指针，移除该节点，释放其内存。
+
+\subsection{detachMin 函数}
+
+detachMin 函数用于从以给定节点为根的子树中查找并删除最小节点。该函数主要用于支持二叉搜索树中的节点删除操作，特别是在处理具有两个子节点的节点时。
+
+函数从传入的根节点开始，递归查找左子树，直到找到最小节点。若最小节点有右子树，父节点的左指针将指向最小节点的右子树；如果没有右子树，则直接将父节点的左指针设为 nullptr。最后，函数返回被删除的最小节点。
+
+detachMin 函数的时间复杂度为 O(h)，其中 h 是树的高度。这是因为在最坏情况下，函数需要遍历树的高度才能找到最小节点。
+
+由于它只涉及指针的更新，删除操作非常高效，避免了不必要的节点复制和复杂的处理。
+
+
+\section{对测试输出结果的呈现和分析}
+
+\subsection{对测试程序的呈现}
+
+（1）创建树：
+
+通过 insert 方法插入了一系列整数元素，构建出一个二叉搜索树的初始结构。这些元素包括：10、5、15、3、7、12、18 和 20。并打印初始树结构以便观察树的构造及节点之间的关系。
+
+（2）测试删除功能：
+
+程序依次调用 remove 函数，测试不同情况下的节点删除操作：
+
+删除叶子节点：删除值为 7 的节点。
+
+删除只有左子节点的节点：删除值为 5 的节点。
+
+删除只有右子节点的节点：删除值为 20 的节点。
+
+删除根节点（有两个子节点的节点）：删除值为 10 的根节点。
+
+（3）清空树：
+
+最后，调用 makeEmpty 方法清空整棵树，释放所占内存，确保没有内存泄漏。
+
+\subsection{对测试结果的分析}
+
+通过这个 main 函数，程序展示了 BinarySearchTree 类remove函数在不同节点状态下的有效性，确保它能够正确处理各种情况，从而验证其实现的正确性和可靠性。
+
+ 
+经过测试，所有情况函数都能正常工作，没有出现异常行为。
+
+
+\section{（可选）bug报告}
+
+在我的测试中，我没有发现任何明显的 bug。程序在各种操作下都表现良好，没有出现异常情况。
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

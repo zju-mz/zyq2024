@@ -1,0 +1,86 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰棋, 3230104245}
+\chead{数据结构与算法第六次作业}
+\rhead{Nov.11st, 2024}
+
+
+\section{对修改后remove函数实现的阐述}  
+
+\subsection{函数目的}
+修改后的remove 函数用于从二叉搜索树中通过修改指针和节点替换的方式删除指定的元素,并保持树的平衡，防止树变成不平衡的链状结构。
+
+\subsection{功能概述}
+
+1. 查找元素：
+
+（1）函数首先检查当前节点是否为空。如果为空，说明树中不存在该元素，直接返回。
+
+（2）如果当前节点的元素小于要删除的元素，则在左子树中递归查找；如果当前节点的元素大于要删除的元素，则在右子树中递归查找。
+
+2.  删除节点：
+
+一旦找到要删除的节点，根据该节点的子树情况进行处理：
+
+（1）如果节点有两个子节点，使用 detachMin 函数从右子树中找到最小节点，并用该最小节点的值替换当前节点的值。这种方式避免了节点内容的复制。
+
+（2）如果节点只有一个子节点或没有子节点，直接更新指针，移除该节点，释放其内存。
+
+3.  旋转操作：
+
+如果树是自平衡的（例如 AVL 树），删除操作可能会导致树的某些部分失去平衡。树的平衡由平衡因子控制（即左右子树的高度差）。
+
+在每次删除节点后，需要检查树的平衡因子并进行旋转操作来恢复平衡。rotate 函数会根据节点的平衡因子决定需要执行哪种旋转：
+
+（1）右旋：当节点的左子树比右子树重时，进行右旋。
+
+（2）左旋：当节点的右子树比左子树重时，进行左旋。
+
+（3）双旋：当某一子树的平衡因子不符合平衡条件时（例如左子树的右子树过重），可以先进行一次旋转再进行另一种旋转。
+
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

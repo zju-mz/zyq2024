@@ -1,0 +1,81 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+\usepackage{booktabs} 
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰棋, 3230104245}
+\chead{数据结构与算法第七次作业}
+\rhead{Dec.2th, 2024}
+
+\section{设计思路}
+
+HeapSort.h实现了一个简单的堆排序算法，用于对std::vector中的元素进行排序。整体思路是先利用std::make\_heap将输入元素构建成一个最大堆，然后通过n次调用std::pop\_heap将最大元素逐步移动到向量末尾并且对剩余元素重新构建最大堆，从而实现排序。
+
+\section{测试流程}
+首先定义了一系列辅助函数，包括check函数用于检查序列是否有序（升序），以及四个用于生成不同类型测试序列的函数（generateRandomVector、generateSortedVector、generateReverseSortedVector、generatePartiallyDuplicatedVector）。
+
+然后在main函数中，设定了测试序列的长度为1000000，此规模用于模拟实际应用中的大数据场景。接着逐个测试我自定义的堆排序和系统的std::sort\_heap在处理四种数列所用的时间，验证是否排序正确并输出结果。
+
+
+\begin{table}[h] % "h" 表示将表格放置在当前位置
+    \centering % 表格居中
+    \caption{效率对比} % 表格标题
+    \begin{tabular}{ccc} % "ccc" 表示每列都是居中对齐
+        \toprule
+        & 自定义堆排序 & std::\text{sort\_heap} time \\
+        \midrule
+        随机序列 & 0.826334s & 0.675536s \\
+        有序序列 & 0.451392s & 0.429709s \\
+        逆序序列 & 0.474902s & 0。441454s \\
+        部分元素重复序列 & 0.563454s & 0.526029s \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:efficiency_comparison} % 表格标签，用于引用
+\end{table}
+
+\section{效率差异原因分析}
+
+在自定义heapsort中，我是先构建了一次最大堆，然后在循环中多次调用pop\_heap完善新的最大堆。而std::sort\_heap在使用前通常也需要先构建堆但可能后续的操作更为简单，如不用先把最大元素移到最后一位而是用更省时的方法。同时标准库的实现可能有更好的协同优化，使得整体效率更高。例如，可能在内存布局、缓存利用等方面进行了优化，减少了数据交换和移动的开销。
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+

@@ -1,0 +1,111 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{geometry, CJKutf8}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+% useful packages.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{layout}
+\usepackage{listings}
+\usepackage{float, caption}
+
+\lstset{
+    basicstyle=\ttfamily, basewidth=0.5em
+}
+
+% some common command
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\difFrac}[2]{\frac{\dif #1}{\dif #2}}
+\newcommand{\pdfFrac}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\OFL}{\mathrm{OFL}}
+\newcommand{\UFL}{\mathrm{UFL}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\op}{\odot}
+\newcommand{\Eabs}{E_{\mathrm{abs}}}
+\newcommand{\Erel}{E_{\mathrm{rel}}}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{周钰棋, 3230104245}
+\chead{数据结构与算法项目作业}
+\rhead{Dec.21st, 2024}
+
+
+\section{项目作业：四则混合运算器}  
+
+\subsection{函数目的}
+编写一个四则运算表达式求值程序，
+该程序能处理含有加(+)、减(-)、乘(*)、除(/)和括号(())的中缀表达式。
+程序需要能判断输入是否合法，并在不合法的情况下输出"ILLEGAL"。
+
+\subsection{设计思路}
+1.合法性检测：
+
+（1）括号匹配：确保括号正确匹配，不能有多余或遗漏的括号。
+
+（2）运算符合法性：运算符不能连续出现，不能出现在表达式的开头或结尾。
+
+（3）除数为零：如果表达式包含除法运算，必须确保除数不为零。ps.这一步放在运算中检验，除数为0则直接报错，退出函数。
+
+（4）数字合法性：支持带小数和科学计数法的数字，需要正确解析和识别。
+
+2.  表达式求值：
+
+我用两个栈：一个栈用来存储数字，另一个栈用来存储运算符（如 +, -, *, /）。
+
+（1）读取数字：遇到数字时，先用while循环将多位数字读完，然后用stod函数将其解析为一个浮动数值，并将其推入操作数栈。
+
+（2）读取运算符：遇到运算符时，判断运算符的优先级。如果栈顶的运算符优先级较高（或相等），则先执行栈中的运算并将结果存入操作数栈；否则，将运算符压入运算符栈。
+
+（3）遇到左括号 (：遇到左括号时，将其压入运算符栈，表示括号内的运算。
+
+（4）遇到右括号 )：遇到右括号时，开始从运算符栈中弹出运算符并计算，直到遇到左括号 ( 为止，括号内的计算完成后将其从栈中弹出。
+
+\subsection{测试样例}
+以下测试样例包含合法的带小数和科学计数法表达式和各种特殊情况的非法表达式（如缺少数值、括号不匹配、重复运算符、算式首位出现运算符、除以0）\\
+Testing expression: 5 + 3 * 2\\
+The result is: 11\\
+-------------------------------------\\
+Testing expression: 1.2e3 + 5\\
+The result is: 1205\\
+-------------------------------------\\
+Testing expression: 5 + \\
+ILLEGAL\\
+-------------------------------------\\
+Testing expression: (1 + 2\\
+ILLEGAL\\
+-------------------------------------\\
+Testing expression: 5 ++ 3\\
+ILLEGAL\\
+-------------------------------------\\
+Testing expression: 10 / (2 + 3)\\
+The result is: 2\\
+-------------------------------------\\
+Testing expression: *2.5 + 3.0 * 4\\
+ILLEGAL\\
+-------------------------------------\\
+Testing expression: 2 / 0\\
+ILLEGAL\\
+-------------------------------------\\
+
+\subsection{加分因素}
+考虑了科学计数法，但没有考虑负号。
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
